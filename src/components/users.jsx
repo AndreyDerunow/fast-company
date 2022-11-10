@@ -5,14 +5,16 @@ const Users = () => {
   const [users, setUsers] = useState(api.users.fetchAll);
   const badgeColor = users.length ? "bg-primary" : "bg-danger"; //цвет Badge
   let badgeClasses = "badge m-2 "; //классы Badge
-  const formatText = () => {
-    if (users.length % 10 < 2 || users.length % 10 > 4 || users.length === 12) {
-      return `${users.length} человек тусанет с тобой сегодня`;
+  const renderPhrase = (number) => {
+    if (number % 10 < 2 || number % 10 > 4 || number === 12) {
+      return `${number} человек тусанет с тобой сегодня`;
     } else {
-      return `${users.length} человека тусанут с тобой сегодня`;
+      return `${number} человека тусанут с тобой сегодня`;
     }
   };
-  const badgeText = users.length ? formatText() : "Никто с тобой не тусанет"; //формируем текст для Badge в начале страницы
+  const badgeText = users.length
+    ? renderPhrase(users.length)
+    : "Никто с тобой не тусанет"; //формируем текст для Badge в начале страницы
 
   const renderBadge = () => {
     badgeClasses += badgeColor;
