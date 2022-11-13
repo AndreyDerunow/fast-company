@@ -6,7 +6,7 @@ const Users = () => {
   const badgeColor = !!users.length ? "bg-primary" : "bg-danger"; //цвет Badge
   let badgeClasses = "badge m-2 "; //классы Badge
   const renderPhrase = (number) => {
-    if (!(number > 11 && number < 15)) {
+    if (!(number % 100 > 11 && number % 100 < 15)) {
       if (number % 10 < 2 || number % 10 > 4) {
         return `${number} человек тусанет с тобой сегодня`;
       } else {
