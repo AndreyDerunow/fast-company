@@ -3,7 +3,7 @@ import api from "../api";
 
 const Users = () => {
   const [users, setUsers] = useState(api.users.fetchAll);
-  const badgeColor = users.length ? "bg-primary" : "bg-danger"; //цвет Badge
+  const badgeColor = !!users.length ? "bg-primary" : "bg-danger"; //цвет Badge
   let badgeClasses = "badge m-2 "; //классы Badge
   const renderPhrase = (number) => {
     if (!(number > 11 && number < 15)) {
@@ -16,7 +16,7 @@ const Users = () => {
       return `${number} человек тусанет с тобой сегодня`;
     }
   };
-  const badgeText = users.length
+  const badgeText = !!users.length
     ? renderPhrase(users.length)
     : "Никто с тобой не тусанет"; //формируем текст для Badge в начале страницы
 
@@ -65,7 +65,7 @@ const Users = () => {
   return (
     <>
       <h1>{renderBadge()}</h1>
-      {Boolean(users.length) && (
+      {!!users.length && (
         <table className="table">
           <thead>
             <tr>
