@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import api from "./api";
-import SearchStatus from "./components/searchStatus";
+
 import Users from "./components/users";
 
 const App = () => {
@@ -20,29 +20,11 @@ const App = () => {
   };
   return (
     <>
-      <SearchStatus number={users.length} />
-      {!!users.length && (
-        <table className="table">
-          <thead>
-            <tr>
-              <th scope="col">Имя</th>
-              <th scope="col">Качества</th>
-              <th scope="col">Профессия</th>
-              <th scope="col">Встретился, раз</th>
-              <th scope="col">Оценка</th>
-              <th scope="col">Избранное</th>
-              <th scope="col"></th>
-            </tr>
-          </thead>
-          <tbody>
-            <Users
-              users={users}
-              onDelete={handleDeleteUser}
-              onFavorite={handleMakeFavorite}
-            />
-          </tbody>
-        </table>
-      )}
+      <Users
+        users={users}
+        onDelete={handleDeleteUser}
+        onFavorite={handleMakeFavorite}
+      />
     </>
   );
 };
