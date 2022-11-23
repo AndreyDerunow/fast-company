@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 
 const Bookmark = ({ bookmark, onFavorite, id }) => {
     const addClass = bookmark ? "-fill" : "";
@@ -8,6 +9,12 @@ const Bookmark = ({ bookmark, onFavorite, id }) => {
             onClick={() => onFavorite(id)}
         ></button>
     );
+};
+
+Bookmark.propTypes = {
+    bookmark: PropTypes.bool.isRequired,
+    onFavorite: PropTypes.func.isRequired,
+    id: PropTypes.string.isRequired
 };
 
 export default Bookmark;
