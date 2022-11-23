@@ -3,6 +3,7 @@ import { pagination } from "../utils/paginate";
 import Pagination from "./pagination";
 import SearchStatus from "./searchStatus";
 import User from "./user";
+import PropTypes from "prop-types";
 
 const Users = ({ users, ...rest }) => {
     const count = users.length;
@@ -44,6 +45,25 @@ const Users = ({ users, ...rest }) => {
             />
         </>
     );
+};
+
+Users.propTypes = {
+    users: PropTypes.arrayOf(
+        PropTypes.shape({
+            _id: PropTypes.string.isRequired,
+            name: PropTypes.string.isRequired,
+            profession: PropTypes.objectOf(PropTypes.string.isRequired),
+            qualities: PropTypes.arrayOf(
+                PropTypes.objectOf(PropTypes.string.isRequired)
+            ),
+            completedMeetings: PropTypes.number.isRequired,
+            rate: PropTypes.number.isRequired
+        })
+    ),
+    rest: PropTypes.shape({
+        onDelete: PropTypes.func.isRequired,
+        onFavorite: PropTypes.func.isRequired
+    })
 };
 
 export default Users;
