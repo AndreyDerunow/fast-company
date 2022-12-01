@@ -5,6 +5,7 @@ import Users from "./components/users";
 
 const App = () => {
     const [users, setUsers] = useState(api.users.fetchAll);
+
     const handleDeleteUser = (userId) => {
         setUsers((prevState) =>
             prevState.filter((user) => user._id !== userId)
