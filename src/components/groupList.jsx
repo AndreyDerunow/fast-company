@@ -8,22 +8,36 @@ const GroupList = ({
     onItemSelect,
     selectedItem
 }) => {
-    console.log(items);
+    const itemsIsArray = Array.isArray(items);
+    const itemsTyped = itemsIsArray ? items : Object.keys(items);
     return (
         <ul className="list-group">
-            {Object.keys(items).map((item) => (
-                <li
-                    key={items[item][valueProperty]}
-                    className={
-                        "list-group-item" +
-                        (items[item] === selectedItem ? " active" : "")
-                    }
-                    onClick={() => onItemSelect(items[item])}
-                    role="button"
-                >
-                    {items[item][contentProperty]}
-                </li>
-            ))}
+            {itemsTyped.map((item) => {
+                return (
+                    <li
+                        key={
+                            itemsIsArray
+                                ? item[valueProperty]
+                                : items[item][valueProperty]
+                        }
+                        className={
+                            "list-group-item" +
+                            ((itemsIsArray ? item : items[item]) ===
+                            selectedItem
+                                ? " active"
+                                : "")
+                        }
+                        onClick={() =>
+                            onItemSelect(itemsIsArray ? item : items[item])
+                        }
+                        role="button"
+                    >
+                        {itemsIsArray
+                            ? item[contentProperty]
+                            : items[item][contentProperty]}
+                    </li>
+                );
+            })}
         </ul>
     );
 };
@@ -34,7 +48,7 @@ GroupList.defaultProps = {
 };
 
 GroupList.propTypes = {
-    items: PropTypes.object.isRequired,
+    items: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
     valueProperty: PropTypes.string.isRequired,
     contentProperty: PropTypes.string.isRequired,
     onItemSelect: PropTypes.func,

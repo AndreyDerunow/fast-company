@@ -17,16 +17,16 @@ const Users = ({ users, ...rest }) => {
         setCurrentPAge(pageIndex);
     };
     useEffect(() => {
-        api.professions.fetchAll().then((data) => setProfessions(data));
+        api.professions.fetchAll().then((data) => setProfessions(data)); // единожды получаем данные о профессиях и ставим их
     }, []);
     useEffect(() => {
-        setCurrentPAge(1);
+        setCurrentPAge(1); //   каждый раз при фильтрации по профессии выставляем 1 страницу в пагинации
     }, [selectedProf]);
     const handleProfessionSelect = (item) => {
         setSelectedProf(item);
     };
     const filteredUsers = selectedProf
-        ? users.filter((user) => user.profession === selectedProf)
+        ? users.filter((user) => user.profession.name === selectedProf.name)
         : users;
     const count = filteredUsers.length;
     const userCrop = pagination(filteredUsers, pageSize, currentPage);
@@ -91,7 +91,7 @@ Users.propTypes = {
         PropTypes.shape({
             _id: PropTypes.string.isRequired,
             name: PropTypes.string.isRequired,
-            profession: PropTypes.objectOf(PropTypes.string.isRequired),
+            profession: PropTypes.shape(PropTypes.string.isRequired),
             qualities: PropTypes.arrayOf(
                 PropTypes.objectOf(PropTypes.string.isRequired)
             ),
