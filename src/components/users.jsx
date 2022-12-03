@@ -10,18 +10,19 @@ import api from "../api";
 const Users = ({ users, ...rest }) => {
     const pageSize = 4;
 
-    const [currentPage, setCurrentPAge] = useState(1);
+    const [currentPage, setCurrentPage] = useState(1);
     const [professions, setProfessions] = useState();
     const [selectedProf, setSelectedProf] = useState();
     const handlePageChange = (pageIndex) => {
-        setCurrentPAge(pageIndex);
+        setCurrentPage(pageIndex);
     };
     useEffect(() => {
-        api.professions.fetchAll().then((data) => setProfessions(data)); // единожды получаем данные о профессиях и ставим их
+        api.professions.fetchAll().then((data) => setProfessions(data));
     }, []);
     useEffect(() => {
-        setCurrentPAge(1); //   каждый раз при фильтрации по профессии выставляем 1 страницу в пагинации
+        setCurrentPage(1);
     }, [selectedProf]);
+
     const handleProfessionSelect = (item) => {
         setSelectedProf(item);
     };
@@ -29,6 +30,11 @@ const Users = ({ users, ...rest }) => {
         ? users.filter((user) => user.profession.name === selectedProf.name)
         : users;
     const count = filteredUsers.length;
+    useEffect(() => {
+        if (currentPage !== 1 && count === pageSize * (currentPage - 1)) {
+            setCurrentPage(currentPage - 1);
+        }
+    }, [filteredUsers]);
     const userCrop = pagination(filteredUsers, pageSize, currentPage);
     const clearFilter = () => {
         setSelectedProf();
