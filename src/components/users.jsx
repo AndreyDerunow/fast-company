@@ -10,25 +10,31 @@ import api from "../api";
 const Users = ({ users, ...rest }) => {
     const pageSize = 4;
 
-    const [currentPage, setCurrentPAge] = useState(1);
+    const [currentPage, setCurrentPage] = useState(1);
     const [professions, setProfessions] = useState();
     const [selectedProf, setSelectedProf] = useState();
     const handlePageChange = (pageIndex) => {
-        setCurrentPAge(pageIndex);
+        setCurrentPage(pageIndex);
     };
     useEffect(() => {
         api.professions.fetchAll().then((data) => setProfessions(data));
     }, []);
     useEffect(() => {
-        setCurrentPAge(1);
+        setCurrentPage(1);
     }, [selectedProf]);
+
     const handleProfessionSelect = (item) => {
         setSelectedProf(item);
     };
     const filteredUsers = selectedProf
-        ? users.filter((user) => user.profession === selectedProf)
+        ? users.filter((user) => user.profession.name === selectedProf.name)
         : users;
     const count = filteredUsers.length;
+    useEffect(() => {
+        if (currentPage !== 1 && count === pageSize * (currentPage - 1)) {
+            setCurrentPage(currentPage - 1);
+        }
+    }, [filteredUsers]);
     const userCrop = pagination(filteredUsers, pageSize, currentPage);
     const clearFilter = () => {
         setSelectedProf();
@@ -91,7 +97,7 @@ Users.propTypes = {
         PropTypes.shape({
             _id: PropTypes.string.isRequired,
             name: PropTypes.string.isRequired,
-            profession: PropTypes.objectOf(PropTypes.string.isRequired),
+            profession: PropTypes.shape(PropTypes.string.isRequired),
             qualities: PropTypes.arrayOf(
                 PropTypes.objectOf(PropTypes.string.isRequired)
             ),

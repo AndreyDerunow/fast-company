@@ -4,7 +4,7 @@ const SearchStatus = ({ number: length }) => {
     const badgeColor = length ? "bg-primary" : "bg-danger";
     let badgeClasses = "badge m-2 ";
     const renderPhrase = (num) => {
-        if (!(num % 100 < 11 && num % 100 < 15)) {
+        if (num % 100 < 11 && num % 100 < 15) {
             if (num % 10 < 2 || num % 10 > 4) {
                 return `${num} человек тусанет с тобой сегодня`;
             } else {
