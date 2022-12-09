@@ -1,5 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
+import SortDir from "./sortDir";
 const TableHeader = ({ onSort, selectedSort, columns }) => {
     const handleSort = (item) => {
         if (selectedSort.path === item) {
@@ -26,6 +27,10 @@ const TableHeader = ({ onSort, selectedSort, columns }) => {
                         role={columns[column].path && "button"}
                     >
                         {columns[column].name}
+                        {(column === selectedSort.path ||
+                            selectedSort.path === columns[column].path) && (
+                            <SortDir direction={selectedSort.order} />
+                        )}
                     </th>
                 ))}
             </tr>
