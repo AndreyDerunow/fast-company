@@ -3,6 +3,7 @@ import { pagination } from "../utils/paginate";
 import Pagination from "./pagination";
 import SearchStatus from "./searchStatus";
 import UserTable from "./usersTable";
+import UserSearch from "./userSearch";
 import GroupList from "./groupList";
 import api from "../api";
 import _ from "lodash";
@@ -11,6 +12,8 @@ const UsersList = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [professions, setProfessions] = useState();
     const [selectedProf, setSelectedProf] = useState();
+    const [searchStr, setSearchStr] = useState("");
+    const [users, setUsers] = useState();
     const pageSize = 4;
     const [sortBy, setSortBy] = useState({ path: "name", order: "asc" });
     const handlePageChange = (pageIndex) => {
@@ -22,7 +25,7 @@ const UsersList = () => {
     useEffect(() => {
         setCurrentPage(1);
     }, [selectedProf]);
-    const [users, setUsers] = useState();
+
     useEffect(() => {
         api.users.fetchAll().then((data) => setUsers(data));
     }, []);
@@ -43,18 +46,39 @@ const UsersList = () => {
     };
     const handleProfessionSelect = (item) => {
         setSelectedProf(item);
+        if (searchStr) {
+            setSearchStr("");
+        }
     };
+    const handleSearchUsers = ({ target }) => {
+        const str = target.value;
+        setSearchStr(str);
+        if (selectedProf) {
+            setSelectedProf();
+        }
+    };
+
     const handleSort = (item) => {
         setSortBy(item);
     };
     if (users) {
-        const filteredUsers = selectedProf
-            ? users.filter(
-                  (user) =>
-                      JSON.stringify(user.profession) ===
-                      JSON.stringify(selectedProf)
-              )
-            : users;
+        let filteredUsers;
+        if (selectedProf) {
+            filteredUsers = selectedProf
+                ? users.filter(
+                      (user) =>
+                          JSON.stringify(user.profession) ===
+                          JSON.stringify(selectedProf)
+                  )
+                : users;
+        } else if (searchStr) {
+            filteredUsers = users.filter((user) =>
+                user.name.toUpperCase().includes(searchStr.toUpperCase().trim())
+            );
+        } else {
+            filteredUsers = users;
+        }
+
         const count = filteredUsers.length;
 
         const sortedUsers = _.orderBy(
@@ -86,6 +110,10 @@ const UsersList = () => {
 
                 <div className="flex flex-column">
                     <SearchStatus number={count} />
+                    <UserSearch
+                        onSearch={handleSearchUsers}
+                        searchStr={searchStr}
+                    />
                     {count > 0 && (
                         <UserTable
                             users={userCrop}
