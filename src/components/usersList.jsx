@@ -24,7 +24,7 @@ const UsersList = () => {
     }, []);
     useEffect(() => {
         setCurrentPage(1);
-    }, [selectedProf]);
+    }, [selectedProf, searchStr]);
 
     useEffect(() => {
         api.users.fetchAll().then((data) => setUsers(data));

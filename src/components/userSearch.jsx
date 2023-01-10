@@ -8,6 +8,7 @@ const UserSearch = ({ onSearch, searchStr }) => {
                 className="w-100"
                 placeholder="Search..."
                 value={searchStr}
+                name={searchStr}
                 onChange={onSearch}
             />
         </>
